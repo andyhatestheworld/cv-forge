@@ -1,0 +1,4 @@
+# personal CV exports — never commit real CV data
+cvforge_*.json
+
+.DS_Store
