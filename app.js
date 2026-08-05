@@ -147,6 +147,7 @@ function defaultState() {
         projects: [
             {
                 name: 'CV Forge', tech: 'HTML, CSS, JavaScript', date: '2026',
+                links: 'github.com/andrei-example/cv-forge\nLive demo | cvforge.example.com',
                 bullets: 'Built a live CV builder with real-time A4 preview and print-to-PDF export.\nFeatures: photo upload, color themes, JSON import/export, localStorage autosave.'
             }
         ],
@@ -270,6 +271,26 @@ function setPath(obj, path, value) {
 const bulletList = text =>
     String(text || '').split('\n').map(s => s.trim()).filter(Boolean);
 
+/* one link per line, either "https://..." or "Label | https://..." */
+function linkRow(text) {
+    const links = bulletList(text).map(line => {
+        const bar = line.indexOf('|');
+        const label = bar === -1 ? '' : line.slice(0, bar).trim();
+        const raw = bar === -1 ? line : line.slice(bar + 1).trim();
+        const url = safeLink(raw);
+        if (!url) return null;
+        // without a label, show the bare address: readable on paper too
+        const shown = label || raw.replace(/^https?:\/\//i, '').replace(/\/+$/, '');
+        const icon = /\bgithub\.com/i.test(url) ? ICONS.github : ICONS.link;
+        return { url, shown, icon };
+    }).filter(Boolean);
+
+    return links.length
+        ? `<div class="item-links">${links.map(l =>
+            `<a href="${esc(l.url)}">${state.showIcons ? l.icon : ''}${esc(l.shown)}</a>`).join('')}</div>`
+        : '';
+}
+
 /* ═══════════════════════════════════════════════════════
    PREVIEW RENDERING
    ═══════════════════════════════════════════════════════ */
@@ -379,6 +400,7 @@ function sectionPreview(key) {
                 <span>${esc(x.name)} ${x.tech ? `<span class="tech">(${esc(x.tech)})</span>` : ''}</span>
                 <span class="date">${esc(x.date)}</span>
             </div>
+            ${linkRow(x.links)}
             ${ulOf(x.bullets)}
         </div>`).join(''));
     }
@@ -664,6 +686,8 @@ function editorSection(key, s) {
                     ${field('Year', `projects.${i}.date`, x.date)}
                 </div>
                 ${field('Tech stack', `projects.${i}.tech`, x.tech, 'PHP, SQLite, Stripe API')}
+                ${area('Links - one per line, or "Label | link"', `projects.${i}.links`, x.links,
+                       'github.com/you/project\nLive demo | myproject.com')}
                 ${area('Description - one bullet per line', `projects.${i}.bullets`, x.bullets)}
             </div>`).join('')}
             <button class="add-btn" data-action="add" data-list="projects">+ Add project</button>
@@ -717,7 +741,7 @@ const NEW_ITEM = {
     contacts:   () => ({ icon: 'link', text: '', link: '' }),
     experience: () => ({ company: '', role: '', location: '', date: '', bullets: '' }),
     education:  () => ({ degree: '', institution: '', date: '' }),
-    projects:   () => ({ name: '', tech: '', date: '', bullets: '' }),
+    projects:   () => ({ name: '', tech: '', date: '', links: '', bullets: '' }),
     skills:     () => ({ category: '', items: '' })
 };
 

@@ -607,6 +607,27 @@ body { display: flex; flex-direction: column; }
     gap: 3px;
 }
 
+/* links under a project title */
+.cv-page .item-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px 14px;
+    margin: 2px 0 5px;
+    font-size: 0.9em;
+}
+
+.cv-page .item-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--navy-mid);
+    text-decoration: none;
+}
+
+.cv-page .item-links a:hover { text-decoration: underline; }
+
+.cv-page .item-links .contact-icon { width: 11px; height: 11px; }
+
 .cv-page ul { margin: 0 0 0 16px; padding: 0; }
 
 .cv-page li { margin-bottom: 2px; font-size: 1em; color: #2e2e2e; }

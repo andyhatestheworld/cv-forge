@@ -26,6 +26,7 @@ Most online CV builders want an account, an email, a subscription - and your per
 - **Drag & drop** - reorder whole sections and contact lines with the drag handles
 - **Undo / Redo** - toolbar buttons plus `Ctrl+Z` / `Ctrl+Y` for every change: edits, deletes, reorders, imports, even resets
 - **Custom sections** - Certifications, Volunteering, Languages... each with titled, dated, bulleted entries
+- **Project links** - put a repository or live demo link under any project, one per line as `link` or `Label | link`; clickable in the exported PDF, readable on paper
 - **Renameable titles** - write your CV in any language
 
 ### Appearance
